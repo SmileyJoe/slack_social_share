@@ -19,7 +19,7 @@ slack.unfurlMedia(False)
 
 for status in statuses:
      if status.text.find(SHARE_HASH) != -1:
-        slack.text(status.text)
+        slack.text(status.text.replace(SHARE_HASH, ""))
         slack.icon(status.user.profile_image_url)
         slack.userName(status.user.screen_name)
 
