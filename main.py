@@ -1,9 +1,8 @@
 import twitter
 from pprint import pprint
 from settings import *
-import requests
 from slack import *
-from requests.utils import quote
+import time
 
 api = twitter.Api(consumer_key=TWITTER_CONSUMER_KEY,
                   consumer_secret=TWITTER_CONSUMER_SECRET,
@@ -15,15 +14,32 @@ statuses = api.GetUserTimeline(screen_name=TWITTER_SCREEN_NAME)
 slack = Slack()
 slack.token(SLACK_TOKEN)
 slack.channel(SLACK_CHANNEL)
-slack.unfurlMedia(False)
+
+currentTime = time.time() + time.altzone
 
 for status in statuses:
-     if status.text.find(SHARE_HASH) != -1:
-        slack.text(status.text.replace(SHARE_HASH, ""))
-        slack.icon(status.user.profile_image_url)
-        slack.userName(status.user.screen_name)
+    
+    if status.text.find(SHARE_HASH) != -1:
+        #super hack to remove the time zone on the assumption twitters created at will
+        #always be time zone neutral
+        createdAt = str(status.created_at).replace("+0000", "")
+        createdAtSeconds = time.mktime(time.strptime(createdAt, "%c"))
+        timeDiffSeconds = currentTime - createdAtSeconds
 
-        for media in status.media:
-             slack.image(media.media_url)
+        if timeDiffSeconds <= REFRESH_TIME_SECONDS:  
+            slack.text(status.text.replace(SHARE_HASH, ""))
+            slack.icon(status.user.profile_image_url)
+            slack.userName(status.user.screen_name)
 
-        pprint(slack.postMessage())
+            pprint(status.media)
+
+            if status.media:
+                slack.unfurlMedia(False)
+                for media in status.media:
+                    slack.image(media.media_url)
+            else:
+                slack.unfurlMedia(True)
+
+            pprint(slack.postMessage())        
+        else:
+            break
