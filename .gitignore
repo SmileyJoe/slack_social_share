@@ -1,5 +1,10 @@
 # Private files
+# Used for keys and settings for the script
 settings.py
+# Where to store the logs from the script
+log.txt
+# Optional bash_script used to run the project
+slack_share.sh
 
 # Created by https://www.gitignore.io/api/python,visualstudiocode,linux,macos,windows
 

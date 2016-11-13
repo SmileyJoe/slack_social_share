@@ -17,9 +17,12 @@ slack.channel(SLACK_CHANNEL)
 
 currentTime = time.time() + time.altzone
 
+pprint(time.asctime(time.localtime(currentTime)))
+
 for status in statuses:
-    
+    pprint(status.text)
     if status.text.find(SHARE_HASH) != -1:
+        pprint("Has hash: " + SHARE_HASH)
         #super hack to remove the time zone on the assumption twitters created at will
         #always be time zone neutral
         createdAt = str(status.created_at).replace("+0000", "")
@@ -31,8 +34,6 @@ for status in statuses:
             slack.icon(status.user.profile_image_url)
             slack.userName(status.user.screen_name)
 
-            pprint(status.media)
-
             if status.media:
                 slack.unfurlMedia(False)
                 for media in status.media:
@@ -40,6 +41,7 @@ for status in statuses:
             else:
                 slack.unfurlMedia(True)
 
-            pprint(slack.postMessage())        
+            response = slack.postMessage()
+            pprint(response.content)     
         else:
             break
