@@ -30,6 +30,9 @@ class Slack:
 
         self.__attachments += "{'image_url': '%s', 'fallback': 'Image'}" % (imageUrl)
 
+    def getArgs(self):
+        return self.__args
+
     def postMessage(self):
         if self.__attachments:
             self.addArg("attachments", "[" + self.__attachments + "]")
