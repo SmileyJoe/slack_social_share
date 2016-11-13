@@ -38,9 +38,8 @@ for status in statuses:
                     slack.image(media.media_url)
             else:
                 slack.unfurlMedia(True)
-            pprint(slack.getArgs())
-            pprint("-------------------")
-            #response = slack.postMessage()
-            #pprint(response.content)     
+
+            response = slack.postMessage()
+            pprint(response.content)     
     else:
         break
