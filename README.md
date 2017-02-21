@@ -21,7 +21,8 @@ TWITTER_CONSUMER_KEY=<twitter_consumer_key>
 TWITTER_CONSUMER_SECRET=<twitter_consumer_secret>
 TWITTER_ACCESS_TOKEN_KEY=<twitter_access_token_key>
 TWITTER_ACCESS_TOKEN_SECRET=<twitter_access_token_secret>
-TWITTER_SCREEN_NAMES=<csv_of_twitter_accounts_to_check>
+#TWITTER_SCREEN_NAMES={"twitter_username":"slack_username","twitter_username_two":"slack_username_two"}
+TWITTER_SCREEN_NAMES=<dict_of_twitter_accounts_to_check_and_slack_usernames>
 
 SLACK_TOKEN=<slack_api_token>
 SLACK_CHANNEL=<slack_channel_to_share_to>

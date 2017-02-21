@@ -4,14 +4,12 @@ from settings import *
 from slack import *
 import time
 
-screenNames = TWITTER_SCREEN_NAMES.split(",")
-
 api = twitter.Api(consumer_key=TWITTER_CONSUMER_KEY,
                   consumer_secret=TWITTER_CONSUMER_SECRET,
                   access_token_key=TWITTER_ACCESS_TOKEN_KEY,
                   access_token_secret=TWITTER_ACCESS_TOKEN_SECRET)
 
-for screenName in screenNames:
+for screenName, slackName in TWITTER_SCREEN_NAMES.items():
 
     statuses = api.GetUserTimeline(screen_name=screenName)
 
@@ -34,7 +32,7 @@ for screenName in screenNames:
                 slack.channel(SLACK_CHANNEL)  
                 slack.text(status.text.replace(SHARE_HASH, ""))
                 slack.icon(status.user.profile_image_url)
-                slack.userName(status.user.screen_name)
+                slack.userName(slackName)
 
                 if status.media:
                     slack.unfurlMedia(False)
